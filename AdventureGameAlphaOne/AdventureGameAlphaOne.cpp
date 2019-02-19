@@ -25,7 +25,76 @@ struct game_monster {
 	bool isLiving=true;
 	int difficulty;
 };
+/*I thought having dedicated structures to each monster, might be easier than only one monster structure. Maybe not though. I left them all in here as comments.
 
+struct bat 
+{
+	string name;
+	string description;
+	bool isLiving = true;
+	int difficulty = 6;
+}
+struct snake
+{
+	string name;
+	string description;
+	bool isLiving = true;
+	int difficulty = 8;
+};
+struct goblin
+{
+	string name;
+	string description;
+	bool isLiving = true;
+	int difficulty = 10
+};
+struct troll
+{
+	string name;
+	string description;
+	bool isLiving = true;;
+	int difficulty = 12;
+}
+struct troll_king
+{
+	string name;
+	string description;
+	bool isLiving = true;
+	int difficulty = 15;
+}
+*/
+
+/* I also thought it might be helpful to have trap structures.
+struct pit
+{
+	string name;
+	string description;
+	bool isActive = true;
+	int difficulty = 6;
+}
+struct spikes
+{
+	string name;
+	string description;
+	bool isActive = true;
+	int difficulty = 8;
+}
+struct darts
+{
+	string name;
+	string description;
+	bool isActive = true;
+	int difficulty = 10;
+}
+struct poison_cloud
+{
+	string name;
+	string description;
+	bool isActive = true;
+	int difficulty = 12;
+}
+	
+*/
 struct game_room {
 	bool hasTraps, hasMonster, hasRelic, beenVisited;
 	string name, description;
@@ -87,6 +156,14 @@ enum game_locations {
 	BOSS,
 	EXIT
 };
+enum game_items {
+	RED_KEY = 1,
+	GREEN_KEY = 2,
+	BLUE_KEY = 3,
+	YELLOW_KEY = 4,
+};
+int choice;
+int keys;
 
 vector<string> delimit(const string &, char);
 bool isMatch(string, string);
@@ -112,12 +189,91 @@ int gameState;
 game_player *player;
 game_room *rooms;
 
-
 int main()
+{
+	cout << "Would you like to play Adventure Game? ";
+	cin >> choice;
+	if (choice == 2)
+		exit(0);
+	else if (choice == 1)
+		mainGame();
+	return 0;
+}
+void mainGame() 
 {
 	srand(time(0));
 	player = new game_player();
 	initRooms();
+	
+	cout << "What is the player's name? ";
+	cin >> player->name;
+	player->bonus = 0;
+	player->gold = 0;
+
+	cout << player->name << ", you enter a cavern, as you walk inside, the entrance caves in behind you.";
+	cout << "\nIn the dim torchlight you can make out five doors in front of you.";
+	cout << "\nThe two doors to the left are Red and Green, the two doors to the right";
+	cout << "\nare Blue and Yellow. In the center there is a large ornately decorated";
+	cout << "\ndoor that appears to be made out of solid gold. What would you like to do first?";
+	cout << "\nGo through the Red Door. Enter 1";
+	cout << "\nGo through the Green Door. Enter 2";
+	cout << "\nGo through the Blue Door. Enter 3";
+	cout << "\nGo through the Yellow Door. Enter 4";
+	cout << "\nGo through the Golden Door. Enter 5";
+	cout << "\nWhere would you like to go, " << player->name << "? ";
+	cin >> choice;
+	switch (choice)
+	{
+		case 1:
+		{
+			cout << "You have chosen to go through the Red Door.";
+			player->rloc = RED_1;
+			//cin >> action
+			break;
+		}
+		case 2:
+		{
+			cout << "You have chosen to go through the Green Door.";
+			player->rloc = GREEN_1;
+			//cin >> action
+			break;
+		}
+		case 3:
+		{
+			cout << "You have chosen to go through the Blue Door.";
+			player->rloc = BLUE_1;
+			//cin >> action
+			break;
+		}
+		case 4:
+		{
+			cout << "You have chosen to go through the Yellow Door.";
+			player->rloc = YELLOW_1;
+			//cin >> action;
+			break;
+		}
+		case 5: 
+		{
+			/*If they have all the keys, I listed them as enumerators starting at 1, thinking that each time one is picked up add it's value
+			to a variable called keys, and only if the total is the correct number (10) will they be able to go through the boss door.
+			Otherwise it tells them they need the keys to unlock the door. it would look something like this.*/
+			if (keys == 10)
+			{
+				cout << "You have chosen to go through the Golden Door.";
+				player->rloc = BOSS_ENTRY;
+				//cin >> action
+			}
+			else
+			{
+				cout << "As you approach the Golden Door, you notice it has four locks on it. The color ";
+				cout << "\nof each lock matches one of the other doors in the room. Realizing that you must";
+				cout << "\nfind the keys to unlock this door, you turn away. Which door will you enter first, " << player->name << "?";
+				cin >> choice; // We also need to figure out how to get the program to run the switch again if they are not able to go into BOSS_ENTRY yet.
+			}
+				
+		}
+		
+	}
 
 	gameState = 1;
 	string input;
