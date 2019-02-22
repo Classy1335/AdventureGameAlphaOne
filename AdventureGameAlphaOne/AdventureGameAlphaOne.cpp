@@ -506,12 +506,24 @@ void initRooms() {
 	\nThe trolls are after you. You barely managed to slip out alive after they knocked your door down, but they were in fast pursuit\
 	As you escaped your village, they had already slain the chief and were rounding people up. Anyone who tried to run was killed, but\
 	you got a head-start. Your only hope now is that your feet rumble faster than their bellies.";
-	rooms[FOREST_2].description = "Placeholder text for forest running";
-	rooms[FOREST_3].description = "Placeholder text for forest running";
-	rooms[ENTRY].name = "[Placeholder entry name]";
-	rooms[ENTRY].description = "Placeholder text here for entry";
+	rooms[FOREST_2].description = "You continue running, trying to outpace the trolls in pursuit. The branches are like outstretched\
+	\nfingers clawing at your face and clothes. One thought dominates all, 'Keep moving, just keep moving.'";
+	rooms[FOREST_3].description = "As you make your way through the dark forest, you realize that you no longer have any idea where you\
+	\nare. You've never been this deep into the forest before, let alone at night. You keep running, putting one foot in front of the\
+	\nother. As you run, you see a faint glow emerge in the inky blackness. You head towards it. Maybe someone there can help you.";
+	rooms[ENTRY].name = "Main Room, Several Doors";
+	rooms[ENTRY].description = "As you head towards the glow, it gets brighter until you can just make out the entrance to a cave. You head\
+	\ninside. As you make your way into the cave, you notice that torches line the walls lighting the room. It's dim, but you can see\
+	\nthat there are five doors on the wall opposite you. As you cautiously walk closer to the doors, you hear a loud rumble, as if \
+	\nthe earth itself is being split in two. Without warning the entrance behind you caves in. You're trapped. Your only choice is to\
+	\ngo through one of the doors ahead of you. As you move closer, you can make out more details about the doors. On the left there are\
+	\ntwo doors, one red and one green. On the right there are two more, one blue and one yellow. In the center there is a massive, ornately\
+	\ndecorated door that appears to be made of solid gold. Where would you like to go first?";
+	//If this description needs to be less detailed in order to reuse the room later in the program, we can go with something like, You enter
+	//the main room of the cave system. Opposite you are 5 doors, one red, one green, one blue and one yellow. In the center is a massive
+	//golden door. Which door will you go through?
 	rooms[HALLWAY].name = "Corridor, Chamber";
-	rooms[HALLWAY].name = "Placeholder text for colored-door corridor";
+	rooms[HALLWAY].description = "You open the door and head down the dimly lit passage. After a short while, the passage opens into a room.";
 	rooms[RED_EXIT].name = "Red Door, Narrow Passage";
 	rooms[RED_EXIT].description = "You're meandering through what seems an endless passage. Light is dim, and the only direction is forward.";
 	rooms[GREEN_EXIT].name = "Green Door, Narrow Passage";
@@ -522,10 +534,84 @@ void initRooms() {
 	rooms[YELLOW_EXIT].description = "You're meandering through what seems an endless passage. Light is dim, and the only direction is forward.";
 
 	// populated rooms - TODO
+	rooms[RED_1].name = "Small Room";
+	rooms[RED_1].description = "You come into a room that is fairly small and nondescript. It is lit by a few torches on the wall. What would\
+	\nyou like to do?";
+	rooms[RED_2].name = "Small Pantry";
+	rooms[RED_2].description = "You enter the room, and you can tell that it is, or was, a pantry. There are cupboards along the walls and what\
+	\nappears to be several preparation tables in the center of the room. What would you like to do?";
+	rooms[RED_3].name = "Large Sleeping Quarters";
+	rooms[RED_3].description = "When you enter this room you see several rows of bunk beds that stretch off into the distance, fading into the \
+	\ndark. As far as you can tell, there is nothing, or no one, sleeping in the beds. What will you do?";
+	rooms[RED_4].name = "Medium Library";
+	rooms[RED_4].description = "As you cross the threshhold of this room, you see rows of bookcases all filled to the brim with books. This is \
+	\none of the brightest rooms you've been in so far, thanks to the chandeliers hanging from the ceiling. What would you like to do?";
+	rooms[RED_5].name = "Large Forge";
+	rooms[RED_5].description = "As you enter the room, the first thing you notice is that it is very hot. You see the forge and realize that must\
+	\nbe where the heat is coming from. There are workbenches all over the room with tools scattered haphazardly across them. What would you like to\
+	\ndo?";
+	rooms[GREEN_1].name = "Small Storage Room";
+	rooms[GREEN_1].description = "This room is another small storage room. It has several cabinets in it, as well as a stack of crates in the corner\
+	\nWhat will you do?";
+	rooms[GREEN_2].name = "Medium Kitchen";
+	rooms[GREEN_2].description = "This room has several prep tables as well as a sink to wash dishes, and several ovens. You think of the last meal \
+	\nthat you had. Beef stew. Your stomach rumbles and you're reminded of your hunger. What do you do?";
+	rooms[GREEN_3].name = "Medium Distillery";
+	rooms[GREEN_3].description = "As you enter the room, you see the remnants of several stills along the edges of the room. In the center is a table\
+	with several empty bottles scattered across the top. What would you like to do?";
+	rooms[GREEN_4].name = "Large Training Room";
+	rooms[GREEN_4].description = "Inside this room you see racks of practice weapons as well as several training dummies, two archery targets and a \
+	\nfirst aid kit. What are you going to do?";
+	rooms[GREEN_5].name = "Large Mage Workshop";
+	rooms[GREEN_5].description = "As you enter this room you see several arcane tables set up. One of the tables has several crystals on it. One of \
+	\nthe crystals is glowing faintly, but you decide it's best if you leave it alone. What will you do?
+	rooms[BLUE_1].name = "Medium Indoor Garden";
+	rooms[BLUE_1].description = "As you come into this room, the first thing that hits you is the smell. There is the overwhelming smell of manure. As\
+	\nyou cover your nose and mouth to keep from gagging, you see that all manner of moss, lichens, and mushrooms are growing in planter boxes filled \
+	\nwith what you can only guess is manure. What are going to do?";
+	rooms[BLUE_2].name = "Large Library";
+	rooms[BLUE_2].description = "In this room there are hundreds of bookcases teeming with books. As you glance around you see several that appear to be\
+	\nbound in solid gold. They are beautiful but you decide to keep moving. What will you do?";
+	rooms[BLUE_3].name = "Burnt Mage Workshop";
+	rooms[BLUE_3].description = "Once in this room you can see that it is a mage's workshop. Or it was. It seems as though something went horribly wrong\
+	\nwhen it was last used. Everything inside is burnt to a crisp, and in the center of the room are the splintered remains of an arcane table. What would\
+	\nyou like to do?";
+	rooms[BLUE_4].name = "Large Pantry";
+	rooms[BLUE_4].description = "You emerge into a large pantry with al sorts of dried meats and cheeses hanging from pegs in the rafters. Despite your \
+	\nhunger, you know that you should not stop and eat. What will you do?";
+	rooms[BLUE_5].name = "Large Archery Range";
+	rooms[BLUE_5].description = "Upon entering this room, you see that it is a large indoor archery range. There is a row of archery targets that stretches\
+	\noff into the depths of the darkness. What are you going to do?";
+	rooms[YELLOW_1].name = "Large Tavern";
+	rooms[YELLOW_1].description = "You come into this room and see that it is a tavern. There are several tables set up, with chairs, as well as a row of bar\
+	\nstools set up along the bar. You see the tap handles behind the bar and you wish that you had the time to enjoy a pint. What would you like to do?";
+	rooms[YELLOW_2].name = "Large Armory"
+	rooms[YELLOW_2].description = "Once you are in this room, you see racks of weapons lined up in the room. All manner of weapons are stored in the racks,\
+	\nswords, maces, warhammers, spears, and many more. In the center of the room is a row of many workbenches littered with an assortment of hammers, tongs\
+	\nwhetstones and other various tools. What will you do?";
+	rooms[YELLOW_3].name = "Large Dining Hall"
+	rooms[YELLOW_3].description = "In this room you see rows of tables lined up stretching into the distance. There are plates at the tables and a candleabra\
+	on each table. What are you going to do?";
+	rooms[YELLOW_4].name = "Medium Latrine";
+	rooms[YELLOW_4].description = "You enter this room and see that there are several stalls with toilets on one side, and on the other there are tubs lined up\
+	\nfor bathing. You are surprised that it doesn't smell worse than it does. What would you like to do?";
+	rooms[YELLOW_5].name = "Large Stable";\
+	rooms[YELLOW_5].description = "Upon entering this room, you realize you've stumbled across a stable. There are several horses in the stalls one side of the\
+	\nroom and on the other there are several large bales of hay. You are thankful for the signs of life the horses bring you. What will you do?";
+	rooms[BOSS_ENTRY].name = "Large Golden Door";
+	rooms[BOSS_ENTRY].description = "You approach the large golden door with the four keys. As you unlock each lock, one by one, they fall to the ground. As the\
+	\nfinal lock hits the ground you hear a rumbling and the room starts to shake slightly. The massive doors swing open and there is a blazinf light on the other\
+	\nside of the doors. What are you going to do?";
+	rooms[BOSS].name = "Large Throne Room";
+	rooms[BOSS].description = "As you step through the doors, you find yourself in a brightly lit throne room, with tall vaulted ceilings and many paintings on the \
+	\nthe wall. There is a roaring fire in the fireplace on one wall, and across from you you see a massive golden throne. What would you like to do?";
+	rooms[EXIT].name = "Dungeon Exit";
+	rooms[EXIT].description = "As you exit the caves, the sunlight hits your face causing you to squint in the brightness momentarily. You realize that you've been in\
+	\n the caves all night. You breathe a sigh of relief as you realize that it's over and you wander off into the forest in search of a place to sleep.";
 };
 
 // d20 function - returns a roll from 1 to 20, +/- bias
-int d20(int bias) {
+int d20(int bias) { 
 	int roll = rand() % 20 + 1;
 	roll += bias;
 	(roll > 20 ? roll = 20 : 0);
