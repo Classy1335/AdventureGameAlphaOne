@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <ctime>
+#include <fstream>
 using namespace std;
 
 // states for game status
@@ -129,6 +130,8 @@ vector<string> getInput();
 bool isOpeningRoom(int);
 bool isNeutralRoom(int);
 void initRooms();
+void hiScores();
+void newHiScores();
 int d20(int);
 
 // action function prototypes
@@ -137,6 +140,7 @@ void doFight();
 void doDodge();
 void doLook();
 void doRun();
+void doEnter();
 
 
 
@@ -229,6 +233,7 @@ const int GAME_ROOM_SIZE = EXIT+1;
 game_player *player;
 game_room *rooms;
 int gameState;
+int hiScore[5];
 
 int main()
 {
@@ -254,7 +259,7 @@ int main()
 				choice = atoi(command[0].c_str());
 				switch(choice) {
 					case MENU_HISCORES:
-						cout << "High scores not implemented yet... sorry" << endl;
+						hiScores();
 					break;
 					case MENU_PLAY:
 						cout << "Game initializing..." << endl;
@@ -312,9 +317,8 @@ int main()
 						break;
 						case COMMAND_UNKNOWN:
 						break;
-
 						case COMMAND_ENTER:
-							
+							doEnter();
 						break;
 						default:
 						break;
@@ -324,6 +328,7 @@ int main()
 			// player died
 			case STATE_GAMEOVER:
 				// cleanup
+				newHiScores();
 				delete[] rooms;
 				delete player;
 				gameState = STATE_MENU;
@@ -367,7 +372,7 @@ int determineAction(vector<string> input) {
 			// search player if (isMatch(p->name, target)) cout << "Affirmitive match: " << m->name << endl;
 		}
 		cid = COMMAND_LOOK;
-	} else if(cmd.compare("") == 0) {
+	} else if(isMatch("enter", cmd)) {
 		cid = COMMAND_ENTER;
 	} else {
 		cout << "Unknown command";
@@ -498,7 +503,39 @@ void doRun() {
 		doContinue();
 	}
 }
+//I attempted to write a function to let the player select where they want to go in the first room.
+void doEnter() {
+	game_player *p = player;
+	game_room *r = &rooms[p->rloc];
+	game_monster *m = &r->monster;
+	game_trap *t = &r->trap;
+	int choice;
+	cout << "Which door would you like to enter?";
+	cout << "\n1 for the Red Door.";
+	cout << "\n2 for the Green Door.";
+	cout << "\n3 for the Blue Door.";
+	cout << "\n4 for the Yellow Door.";
+	cin >> choice;
 
+	switch (choice)
+	{
+		case 1:
+			p->rloc = RED_1;
+			break;
+		case 2:
+			p->rloc = GREEN_1;
+			break;
+		case 3: 
+			p->rloc = BLUE_1;
+			break;
+		case 4: 
+			p->rloc = YELLOW_1;
+			break;
+		default:
+			cout << "There is no other way out. You must go through a door.";
+	}
+
+}
 
 vector<string> getInput() {
 	string input;
@@ -578,15 +615,15 @@ void initRooms() {
 	\nare. You've never been this deep into the forest before, let alone at night. You keep running, putting one foot in front of the\
 	\nother. Suddenly there is no more ground beneath your feet. You tumble down into the darkness.";
 	rooms[ENTRY].name = "Main Room, Several Doors";
-	rooms[ENTRY].description = "You hit the ground with a dull thud, and the breath is knoked from your chest.You take a few moments\
-	\n and recover, eventually getting up and dusting yourself off. you like around and realize you've fallen to the bottom of a rather\
+	rooms[ENTRY].description = "You hit the ground with a dull thud, and the breath is knocked from your chest.You take a few moments\
+	\n and recover, eventually getting up and dusting yourself off. you look around and realize you've fallen to the bottom of a rather\
 	\nlarge pit. There is no way back up to the forest above. You scan the pit and see an opening on the wall. You approach it. As you \
 	\n approach the opening you notice that torches line the walls lighting the room you've just walked into. It's dim, but you can see\
 	\nthat there are five doors on the wall opposite you. As you cautiously walk closer to the doors, you hear a loud rumble, as if \
 	\nthe earth itself is being split in two. Without warning the entrance behind you caves in. You're trapped. Your only choice is to\
 	\ngo through one of the doors ahead of you. As you move closer, you can make out more details about the doors. On the left there are\
 	\ntwo doors, one red and one green. On the right there are two more, one blue and one yellow. In the center there is a massive, ornately\
-	\ndecorated door that appears to be made of solid gold. Where would you like to go first?";
+	\ndecorated door that appears to be made of solid gold. The Red Door is the only door that's unlocked.";
 	//If this description needs to be less detailed in order to reuse the room later in the program, we can go with something like, You enter
 	//the main room of the cave system. Opposite you are 5 doors, one red, one green, one blue and one yellow. In the center is a massive
 	//golden door. Which door will you go through?
@@ -603,77 +640,72 @@ void initRooms() {
 
 	// populated rooms - TODO
 	rooms[RED_1].name = "Small Room";
-	rooms[RED_1].description = "You come into a room that is fairly small and nondescript. It is lit by a few torches on the wall. What would\
-	you like to do?";
+	rooms[RED_1].description = "You come into a room that is fairly small and nondescript. It is lit by a few torches on the wall.";
 	rooms[RED_2].name = "Small Pantry";
 	rooms[RED_2].description = "You enter the room, and you can tell that it is, or was, a pantry. There are cupboards along the walls and what\
-	appears to be several preparation tables in the center of the room. What would you like to do?";
+	appears to be several preparation tables in the center of the room.";
 	rooms[RED_3].name = "Large Sleeping Quarters";
 	rooms[RED_3].description = "When you enter this room you see several rows of bunk beds that stretch off into the distance, fading into the \
-	dark. As far as you can tell, there is nothing, or no one, sleeping in the beds. What will you do?";
+	dark. As far as you can tell, there is nothing, or no one, sleeping in the beds.";
 	rooms[RED_4].name = "Medium Library";
 	rooms[RED_4].description = "As you cross the threshhold of this room, you see rows of bookcases all filled to the brim with books. This is \
-	one of the brightest rooms you've been in so far, thanks to the chandeliers hanging from the ceiling. What would you like to do?";
+	one of the brightest rooms you've been in so far, thanks to the chandeliers hanging from the ceiling.";
 	rooms[RED_5].name = "Large Forge";
 	rooms[RED_5].description = "As you enter the room, the first thing you notice is that it is very hot. You see the forge and realize that must\
-	be where the heat is coming from. There are workbenches all over the room with tools scattered haphazardly across them. What would you like to\
-	do?";
+	be where the heat is coming from. There are workbenches all over the room with tools scattered haphazardly across them.";
 	rooms[GREEN_1].name = "Small Storage Room";
-	rooms[GREEN_1].description = "This room is another small storage room. It has several cabinets in it, as well as a stack of crates in the corner\
-	What will you do?";
+	rooms[GREEN_1].description = "This room is another small storage room. It has several cabinets in it, as well as a stack of crates in the corner.";
 	rooms[GREEN_2].name = "Medium Kitchen";
 	rooms[GREEN_2].description = "This room has several prep tables as well as a sink to wash dishes, and several ovens. You think of the last meal \
-	that you had. Beef stew. Your stomach rumbles and you're reminded of your hunger. What do you do?";
+	that you had. Beef stew. Your stomach rumbles and you're reminded of your hunger.";
 	rooms[GREEN_3].name = "Medium Distillery";
 	rooms[GREEN_3].description = "As you enter the room, you see the remnants of several stills along the edges of the room. In the center is a table\
-	with several empty bottles scattered across the top. What would you like to do?";
+	with several empty bottles scattered across the top.";
 	rooms[GREEN_4].name = "Large Training Room";
 	rooms[GREEN_4].description = "Inside this room you see racks of practice weapons as well as several training dummies, two archery targets and a \
-	first aid kit. What are you going to do?";
+	first aid kit.";
 	rooms[GREEN_5].name = "Large Mage Workshop";
 	rooms[GREEN_5].description = "As you enter this room you see several arcane tables set up. One of the tables has several crystals on it. One of \
-	the crystals is glowing faintly, but you decide it's best if you leave it alone. What will you do?";
-	
+	the crystals is glowing faintly, but you decide it's best if you leave it alone.";
 	rooms[BLUE_1].name = "Medium Indoor Garden";
 	rooms[BLUE_1].description = "As you come into this room, the first thing that hits you is the smell. There is the overwhelming smell of manure. As\
 	you cover your nose and mouth to keep from gagging, you see that all manner of moss, lichens, and mushrooms are growing in planter boxes filled \
-	with what you can only guess is manure. What are going to do?";
+	with what you can only guess is manure.";
 	rooms[BLUE_2].name = "Large Library";
 	rooms[BLUE_2].description = "In this room there are hundreds of bookcases teeming with books. As you glance around you see several that appear to be\
-	bound in solid gold. They are beautiful but you decide to keep moving. What will you do?";
+	bound in solid gold. They are beautiful but you decide to keep moving.";
 	rooms[BLUE_3].name = "Burnt Mage Workshop";
 	rooms[BLUE_3].description = "Once in this room you can see that it is a mage's workshop. Or it was. It seems as though something went horribly wrong\
-	when it was last used. Everything inside is burnt to a crisp, and in the center of the room are the splintered remains of an arcane table. What would\
-	you like to do?";
+	when it was last used. Everything inside is burnt to a crisp, and in the center of the room are the splintered remains of an arcane table.";
 	rooms[BLUE_4].name = "Large Pantry";
 	rooms[BLUE_4].description = "You emerge into a large pantry with al sorts of dried meats and cheeses hanging from pegs in the rafters. Despite your \
-	hunger, you know that you should not stop and eat. What will you do?";
+	hunger, you know that you should not stop and eat.";
 	rooms[BLUE_5].name = "Large Archery Range";
 	rooms[BLUE_5].description = "Upon entering this room, you see that it is a large indoor archery range. There is a row of archery targets that stretches\
-	off into the depths of the darkness. What are you going to do?";
+	off into the depths of the darkness.";
 	rooms[YELLOW_1].name = "Large Tavern";
 	rooms[YELLOW_1].description = "You come into this room and see that it is a tavern. There are several tables set up, with chairs, as well as a row of bar\
-	stools set up along the bar. You see the tap handles behind the bar and you wish that you had the time to enjoy a pint. What would you like to do?";
+	stools set up along the bar. You see the tap handles behind the bar and you wish that you had the time to enjoy a pint.";
 	rooms[YELLOW_2].name = "Large Armory";
 	rooms[YELLOW_2].description = "Once you are in this room, you see racks of weapons lined up in the room. All manner of weapons are stored in the racks,\
 	swords, maces, warhammers, spears, and many more. In the center of the room is a row of many workbenches littered with an assortment of hammers, tongs\
-	whetstones and other various tools. What will you do?";
+	whetstones and other various tools.";
 	rooms[YELLOW_3].name = "Large Dining Hall";
-		rooms[YELLOW_3].description = "In this room you see rows of tables lined up stretching into the distance. There are plates at the tables and a candleabra\
-	on each table. What are you going to do?";
+		rooms[YELLOW_3].description = "In this room you see rows of tables lined up stretching into the distance. There are plates at the tables and a\
+		\ncandleabra at each table.";
 	rooms[YELLOW_4].name = "Medium Latrine";
 	rooms[YELLOW_4].description = "You enter this room and see that there are several stalls with toilets on one side, and on the other there are tubs lined up\
-	for bathing. You are surprised that it doesn't smell worse than it does. What would you like to do?";
+	for bathing. You are surprised that it doesn't smell worse than it does.";
 	rooms[YELLOW_5].name = "Large Stable"; \
 		rooms[YELLOW_5].description = "Upon entering this room, you realize you've stumbled across a stable. There are several horses in the stalls one side of the\
-	room and on the other there are several large bales of hay. You are thankful for the signs of life the horses bring you. What will you do?";
+	room and on the other there are several large bales of hay. You are thankful for the signs of life the horses bring you.";
 	rooms[BOSS_ENTRY].name = "Large Golden Door";
 	rooms[BOSS_ENTRY].description = "You approach the large golden door with the four keys. As you unlock each lock, one by one, they fall to the ground. As the\
-	final lock hits the ground you hear a rumbling and the room starts to shake slightly. The massive doors swing open and there is a blazinf light on the other\
-	side of the doors. What are you going to do?";
+	final lock hits the ground you hear a rumbling and the room starts to shake slightly. The massive doors swing open and there is a blazing light on the other\
+	side of the doors.";
 	rooms[BOSS].name = "Large Throne Room";
 	rooms[BOSS].description = "As you step through the doors, you find yourself in a brightly lit throne room, with tall vaulted ceilings and many paintings on the \
-	\nthe wall. There is a roaring fire in the fireplace on one wall, and across from you you see a massive golden throne. What would you like to do?";
+	\nthe wall. There is a roaring fire in the fireplace on one wall, and across from you you see a massive golden throne.";
 	rooms[EXIT].name = "Dungeon Exit";
 	rooms[EXIT].description = "As you exit the caves, the sunlight hits your face causing you to squint in the brightness momentarily. You realize that you've been in\
 	\n the caves all night. You breathe a sigh of relief as you realize that it's over and you wander off into the forest in search of ";
@@ -766,3 +798,67 @@ int d20(int bias) {
 	(roll > 20 ? roll = 20 : 0);
 	return roll;
 }
+
+//Function to display High Scores
+void hiScores()
+{
+	ifstream inFile;
+	inFile.open("High Scores.txt");
+	if (inFile)
+	{
+		cout << "The High Scores are:" << endl;
+		for (int counter = 0; counter < 5; counter++)
+		{
+			inFile >> hiScore[counter];
+			cout << hiScore[counter] << endl;
+		}
+	}
+	else
+		cout << "There are no High Scores yet. Please play the game to add a High Score." << endl;
+	inFile.close();
+}
+
+//Function to write new high scores to disk.
+void newHiScores()
+{
+	ofstream outFile;
+	outFile.open("High Scores.txt");
+	if (player->gold > hiScore[0])
+	{
+		hiScore[4] = hiScore[3];
+		hiScore[3] = hiScore[2];
+		hiScore[2] = hiScore[1];
+		hiScore[1] = hiScore[0];
+		hiScore[0] = player->gold;
+	}
+	else if (player->gold > hiScore[1])
+	{
+		hiScore[4] = hiScore[3];
+		hiScore[3] = hiScore[2];
+		hiScore[2] = hiScore[1];
+		hiScore[1] = player->gold;
+	}
+	else if (player->gold > hiScore[2])
+	{
+		hiScore[4] = hiScore[3];
+		hiScore[3] = hiScore[2];
+		hiScore[2] = player->gold;
+	}
+	else if (player->gold > hiScore[3])
+	{
+		hiScore[4] = hiScore[3];
+		hiScore[3] = player->gold;
+	}
+	else if (player->gold > hiScore[4])
+		hiScore[4] = player->gold;
+
+	for (int counter = 0; counter < 5; counter++)
+	{
+		outFile << hiScore[counter];
+	}
+	outFile.close();
+}
+	
+	
+	
+
